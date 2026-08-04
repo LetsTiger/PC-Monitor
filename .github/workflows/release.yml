@@ -53,6 +53,7 @@ jobs:
           gh release create $env:GITHUB_REF_NAME `
             .\release\PC-Monitor-0.0.1-beta-win-x64-Setup.exe `
             .\release\PC-Monitor-0.0.1-beta-win-x64-Setup.exe.sha256.txt `
+            --repo $env:GITHUB_REPOSITORY `
             --verify-tag `
             --title "PC Monitor 0.0.1-beta" `
             --generate-notes `
