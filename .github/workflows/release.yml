@@ -1,0 +1,59 @@
+name: Publish tagged release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  validate-release:
+    runs-on: windows-latest
+    steps:
+      - name: Check out complete history
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Validate release tag and branch
+        shell: pwsh
+        run: |
+          $expectedTag = 'v0.0.1-beta'
+          if ($env:GITHUB_REF_NAME -ne $expectedTag) {
+            throw "Dieses Release erwartet das Tag $expectedTag, erhalten wurde $env:GITHUB_REF_NAME."
+          }
+
+          git fetch origin main
+          git merge-base --is-ancestor $env:GITHUB_SHA origin/main
+          if ($LASTEXITCODE -ne 0) {
+            throw 'Release-Tags muessen auf einen Commit zeigen, der in main enthalten ist.'
+          }
+
+  build:
+    needs: validate-release
+    uses: ./.github/workflows/build.yml
+
+  release:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Download verified installer artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: PC-Monitor-0.0.1-beta-win-x64-Setup
+          path: release
+
+      - name: Create GitHub prerelease
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create $env:GITHUB_REF_NAME `
+            .\release\PC-Monitor-0.0.1-beta-win-x64-Setup.exe `
+            .\release\PC-Monitor-0.0.1-beta-win-x64-Setup.exe.sha256.txt `
+            --verify-tag `
+            --title "PC Monitor 0.0.1-beta" `
+            --generate-notes `
+            --prerelease

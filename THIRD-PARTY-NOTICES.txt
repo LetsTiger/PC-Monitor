@@ -1,0 +1,87 @@
+PC Monitor 0.0.1-beta - Drittanbieterhinweise
+================================================
+
+Diese Datei dokumentiert Komponenten, die mit PC Monitor verteilt werden.
+Die vollständigen MPL-2.0-, Apache-2.0- und .NET-Hinweise werden im
+Unterordner "Licenses" installiert. PresentMon besitzt getrennte Hinweise
+unter "Tools\PresentMon" und ist nur Bestandteil der optionalen Komponente.
+
+MPL-2.0
+-------
+- LibreHardwareMonitorLib 0.9.6
+  Copyright: LibreHardwareMonitor
+  Quelle: https://github.com/LibreHardwareMonitor/LibreHardwareMonitor/tree/3d331e3370efb858411f19511373eff65a218701
+- BlackSharp.Core 1.0.7
+  Copyright: Florian K.
+  Quelle: https://github.com/Blacktempel/BlackSharp/tree/c70b735c6cec123ee8a046ac4a0bc6c606f52cf0
+- DiskInfoToolkit 1.1.2
+  Copyright: Florian K.
+  Quelle: https://github.com/Blacktempel/DiskInfoToolkit/tree/25319eae5781e75bcf141e844ceab2afe94d40ea
+- RAMSPDToolkit-NDD 1.4.2
+  Copyright: Florian K.
+  Quelle: https://github.com/Blacktempel/RAMSPDToolkit/tree/3b47b960e0830fef344624ad5e389675d5f0a1ce
+
+Die genannten MPL-Komponenten wurden von PC Monitor nicht verändert.
+Ihre Quelltexte sind unter den oben angegebenen, versionsgebundenen Links
+verfügbar. Der vollständige Lizenztext liegt unter Licenses\MPL-2.0.txt.
+
+Apache-2.0
+----------
+- HidSharp 2.6.4
+  Copyright 2010-2025 James F. Bellinger
+  Quelle: https://software.seekye.com/hidsharp
+  Originale Lizenz: Licenses\HIDSHARP-LICENSE.txt
+- SQLitePCLRaw 3.0.3
+  Copyright 2014-2026 SourceGear, LLC
+  Quelle: https://github.com/ericsink/SQLitePCL.raw/tree/f3f967adafad853375597a6387cacb7573c5b343
+
+Der vollständige Lizenztext liegt unter Licenses\Apache-2.0.txt.
+
+MIT
+---
+- Microsoft.Data.Sqlite 10.0.9
+- Microsoft.Data.Sqlite.Core 10.0.9
+- System.CodeDom 10.0.2
+- System.IO.FileSystem.AccessControl 5.0.0
+- System.IO.Ports 10.0.3
+- System.Management 10.0.2
+- Mono.Posix.NETStandard 1.0.0
+- Bestandteile der mitgelieferten .NET-10-Runtime
+
+Copyright der genannten Microsoft-Pakete und von Mono.Posix.NETStandard:
+© Microsoft Corporation. All rights reserved.
+
+MIT-Lizenztext:
+Copyright (c) the respective copyright holders.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+SQLite
+------
+- SourceGear.sqlite3 3.50.4.5 enthält SQLite 3.50.4.
+- Originaler Hinweis: Licenses\SOURCEGEAR-SQLITE3-LICENSE.txt
+- SQLite ist gemeinfrei (Public Domain): https://sqlite.org/copyright.html
+
+PresentMon 2.5.1
+----------------
+PresentMon wird separat unter der MIT-Lizenz vertrieben. Die optionale
+Installer-Komponente installiert PresentMon.exe zusammen mit LICENSE.txt und
+THIRD_PARTY.txt nach Tools\PresentMon.
+
+Keine der genannten Marken wird zur Empfehlung von PC Monitor verwendet.

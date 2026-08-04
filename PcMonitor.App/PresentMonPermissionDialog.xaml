@@ -1,0 +1,98 @@
+<Window x:Class="PcMonitor.App.PresentMonPermissionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PresentMon-Berechtigung"
+        Icon="Assets/pc-monitor-logo.png"
+        Width="580"
+        Height="380"
+        ResizeMode="NoResize"
+        ShowInTaskbar="True"
+        WindowStartupLocation="CenterScreen"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        Background="{DynamicResource WindowBackgroundBrush}"
+        Foreground="{DynamicResource TextPrimaryBrush}"
+        FontFamily="Segoe UI">
+
+    <Grid Background="{DynamicResource WindowBackgroundBrush}">
+        <Border Margin="24"
+                Padding="24"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1"
+                CornerRadius="14">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="54" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Width="44" Height="44"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Background="{DynamicResource SelectionBrush}"
+                            CornerRadius="10">
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource PrimaryBrush}"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Text="FPS" />
+                    </Border>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Foreground="{DynamicResource TextPrimaryBrush}"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Text="FPS-Erfassung aktivieren?" />
+                        <TextBlock Margin="0,5,0,0"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   FontSize="13"
+                                   Text="PresentMon benötigt dafür einmalig Administratorrechte." />
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Grid.Row="1"
+                           Margin="0,22,0,0"
+                           Foreground="{DynamicResource TextPrimaryBrush}"
+                           FontSize="14"
+                           LineHeight="22"
+                           TextWrapping="Wrap"
+                           Text="Mit PresentMon wird PC Monitor als Administrator neu gestartet und kann FPS sowie Frametimes erfassen. Ohne PresentMon bleibt die App vollständig nutzbar – lediglich die FPS-Erfassung ist deaktiviert." />
+
+                <CheckBox x:Name="RememberChoiceCheckBox"
+                          Grid.Row="2"
+                          Margin="0,20,0,0"
+                          Foreground="{DynamicResource TextPrimaryBrush}"
+                          Content="Auswahl merken und nicht erneut fragen" />
+
+                <StackPanel Grid.Row="4"
+                            Margin="0,24,4,4"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                    <Button Width="160"
+                            MinHeight="42"
+                            Margin="0,0,10,0"
+                            IsDefault="True"
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Click="OnWithPresentMonClick"
+                            Content="Mit PresentMon" />
+                    <Button Width="160"
+                            MinHeight="42"
+                            IsCancel="True"
+                            Click="OnWithoutPresentMonClick"
+                            Content="Ohne PresentMon" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

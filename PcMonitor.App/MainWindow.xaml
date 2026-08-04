@@ -1,0 +1,3275 @@
+<Window x:Class="PcMonitor.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:PcMonitor.App.Controls"
+        Title="PC Monitor"
+        Icon="Assets/pc-monitor-logo.png"
+        Width="1500"
+        Height="960"
+        MinWidth="1120"
+        MinHeight="760"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Background="{DynamicResource WindowBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Kopfbereich -->
+        <Border Grid.Row="0" Padding="24,15" Background="{DynamicResource SidebarBrush}"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Image Width="48" Height="48" Source="Assets/pc-monitor-logo.png" Stretch="Uniform" />
+                <StackPanel Grid.Column="1" Margin="14,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="PC Monitor" FontSize="24" FontWeight="SemiBold" />
+                    <TextBlock Margin="0,3,0,0" Foreground="{DynamicResource TextSecondaryBrush}"
+                               Text="Leistung verstehen. Probleme schneller finden." />
+                </StackPanel>
+
+                <Border Grid.Column="2" Padding="4" Background="{DynamicResource SurfaceBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="EasyModeButton" MinWidth="92" Click="OnEasyModeClick"
+                                Style="{StaticResource PrimaryButtonStyle}" Content="Einfach" />
+                        <Button x:Name="AdvancedModeButton" MinWidth="92" Margin="4,0,0,0"
+                                Click="OnAdvancedModeClick" Content="Erweitert" />
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <TabControl x:Name="MainNavigation" Grid.Row="1" TabStripPlacement="Left"
+                    Style="{StaticResource SidebarTabControlStyle}"
+                    Background="{DynamicResource WindowBackgroundBrush}">
+
+            <!-- ========================================================= -->
+            <!-- AKTUELLER RUN -->
+            <!-- ========================================================= -->
+
+            <TabItem x:Name="CurrentRunTab" Header="Messung">
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+
+                    <Grid Margin="24">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="16" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition x:Name="AdvancedSpacerTwo" Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition x:Name="AdvancedSpacerThree" Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition x:Name="AdvancedSpacerFour" Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition x:Name="AdvancedSpacerOne" Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Run-Name -->
+                        <StackPanel Grid.Row="0">
+                            <TextBlock Margin="0,0,0,6"
+                                       FontWeight="SemiBold"
+                                       Text="Run-Name" />
+
+                            <TextBox Height="36"
+                                     Padding="10,6"
+                                     FontSize="14"
+                                     IsReadOnly="{Binding IsRunning}"
+                                     Text="{Binding RunName,
+                                                    UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+
+                        <!-- Run-Informationen -->
+                        <Border Grid.Row="2"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="210" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Status" />
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.Column="1"
+                                           Text="{Binding StatusText}" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Gestartet" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="1"
+                                           Text="{Binding StartedAtText}" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Beendet" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="1"
+                                           Text="{Binding EndedAtText}" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold"
+                                           Text="Laufzeit" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           FontSize="22"
+                                           FontWeight="SemiBold"
+                                           Text="{Binding DurationText}" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Kompakter Startbereich für den einfachen Modus -->
+                        <Border x:Name="RunActionsPanel" Grid.Row="4"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="8" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock FontSize="17" FontWeight="SemiBold" Text="Messung steuern" />
+                                <TextBlock Grid.Row="2" Foreground="{DynamicResource TextSecondaryBrush}"
+                                           TextWrapping="Wrap"
+                                           Text="Starte die Messung, nutze deinen PC oder dein Spiel wie gewohnt und stoppe sie anschließend wieder." />
+                                <Grid Grid.Row="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0" Height="48" FontSize="15" FontWeight="SemiBold"
+                                            Style="{StaticResource PrimaryButtonStyle}"
+                                            Command="{Binding StartRunCommand}" Content="Messung starten" />
+                                    <Button Grid.Column="2" Height="48" FontSize="15" FontWeight="SemiBold"
+                                            Command="{Binding StopRunCommand}" Content="Messung stoppen" />
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <!-- System und CPU -->
+                        <Border x:Name="SystemCpuPanel" Grid.Row="6"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="210" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <!-- Überschrift -->
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+
+                                    <!-- Systemwerte -->
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+
+                                    <!-- Abstand -->
+                                    <RowDefinition Height="18" />
+
+                                    <!-- CPU-Hardware-Überschrift -->
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+
+                                    <!-- Prozessor -->
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+
+                                    <!-- Package-Temperatur -->
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+
+                                    <!-- Maximale Kerntemperatur -->
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+
+                                    <!-- Durchschnittlicher Takt -->
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+
+                                    <!-- Package-Leistung -->
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Überschrift -->
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Live-System- und CPU-Werte" />
+
+                                <!-- Systemwerte -->
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold"
+                                           Text="CPU-Auslastung" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Consolas"
+                                           FontSize="17"
+                                           Text="{Binding CpuUsageText}" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Top"
+                                           FontWeight="SemiBold"
+                                           Text="RAM-Auslastung" />
+
+                                <StackPanel Grid.Row="4"
+                                            Grid.Column="1">
+
+                                    <TextBlock FontFamily="Consolas"
+                                               FontSize="17"
+                                               Text="{Binding MemoryUsageText}" />
+
+                                    <TextBlock Margin="0,3,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="{Binding MemoryDetailsText}" />
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold"
+                                           Text="Letzte Messung" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding LastMeasurementText}" />
+
+                                <!-- CPU-Hardware -->
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.ColumnSpan="2"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Text="CPU-Hardware" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold"
+                                           Text="Prozessor" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           TextWrapping="Wrap"
+                                           Text="{Binding CpuNameText}" />
+
+                                <TextBlock Grid.Row="12"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold"
+                                           Text="Package-Temperatur" />
+
+                                <TextBlock Grid.Row="12"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Consolas"
+                                           Text="{Binding CpuTemperatureText}" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold"
+                                           Text="Maximale Kerntemperatur" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Consolas"
+                                           Text="{Binding CpuCoreTemperatureText}" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold"
+                                           Text="Durchschnittlicher Takt" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Consolas"
+                                           Text="{Binding CpuClockText}" />
+
+                                <TextBlock Grid.Row="18"
+                                           Grid.Column="0"
+                                           VerticalAlignment="Center"
+                                           FontWeight="SemiBold"
+                                           Text="Package-Leistung" />
+
+                                <TextBlock Grid.Row="18"
+                                           Grid.Column="1"
+                                           VerticalAlignment="Center"
+                                           FontFamily="Consolas"
+                                           Text="{Binding CpuPowerText}" />
+                            </Grid>
+                        </Border>
+
+                        <!-- GPU -->
+                        <Border x:Name="GpuPanel" Grid.Row="8"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="210" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Live-GPU-Werte" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Grafikkarte" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="1"
+                                           TextWrapping="Wrap"
+                                           Text="{Binding GpuNameText}" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Auslastung" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding GpuLoadText}" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Temperatur" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding GpuTemperatureText}" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Hotspot" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding GpuHotspotText}" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Core-Takt" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding GpuCoreClockText}" />
+
+                                <TextBlock Grid.Row="12"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Speichertakt" />
+
+                                <TextBlock Grid.Row="12"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding GpuMemoryClockText}" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Leistung" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding GpuPowerText}" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="VRAM" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding GpuMemoryText}" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Datenträger -->
+                        <Border x:Name="StoragePanel" Grid.Row="10"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="Live-Datenträgerwerte" />
+
+                                    <TextBlock Margin="0,4,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="Alle erkannten physischen Datenträger" />
+                                </StackPanel>
+
+                                <DataGrid Grid.Row="2"
+                                          MinHeight="110"
+                                          MaxHeight="260"
+                                          ItemsSource="{Binding LiveDisks}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          HeadersVisibility="Column"
+                                          GridLinesVisibility="Horizontal"
+                                          SelectionMode="Single">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Datenträger"
+                                                            Width="220"
+                                                            Binding="{Binding DeviceName,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Temperatur"
+                                                            Width="105"
+                                                            Binding="{Binding TemperatureText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Aktivität"
+                                                            Width="95"
+                                                            Binding="{Binding ActivityText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Lesen"
+                                                            Width="105"
+                                                            Binding="{Binding ReadRateText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Schreiben"
+                                                            Width="105"
+                                                            Binding="{Binding WriteRateText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Speicher"
+                                                            Width="180"
+                                                            Binding="{Binding SpaceText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Leben"
+                                                            Width="90"
+                                                            Binding="{Binding LifeText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Status"
+                                                            Width="160"
+                                                            Binding="{Binding StatusText,
+                                                                              Mode=OneWay}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+
+                        <!-- Netzwerk -->
+                        <Border x:Name="NetworkPanel" Grid.Row="12"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="210" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+
+                                    <RowDefinition Height="18" />
+
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+
+                                    <RowDefinition Height="24" />
+
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Live-Netzwerkwerte" />
+
+                                <!-- Gateway -->
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Standardgateway" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="1"
+                                           Text="{Binding GatewayAddressText}" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Gateway-Latenz" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding GatewayLatencyText}" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Gateway-Paketverlust" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding GatewayPacketLossText}" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Gateway-Jitter" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding GatewayJitterText}" />
+
+                                <!-- Internet -->
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.ColumnSpan="2"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Text="Internetverbindung" />
+
+                                <TextBlock Grid.Row="12"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Internet-Latenz" />
+
+                                <TextBlock Grid.Row="12"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding InternetLatencyText}" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Internet-Paketverlust" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding InternetPacketLossText}" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Internet-Jitter" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding InternetJitterText}" />
+
+                                <TextBlock Grid.Row="18"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Aktuelle Ausfälle" />
+
+                                <TextBlock Grid.Row="18"
+                                           Grid.Column="1"
+                                           TextWrapping="Wrap"
+                                           Text="{Binding NetworkFailureText}" />
+
+                                <TextBlock Grid.Row="20"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Netzwerkstatus" />
+
+                                <TextBlock Grid.Row="20"
+                                           Grid.Column="1"
+                                           TextWrapping="Wrap"
+                                           Text="{Binding NetworkStatusText}" />
+
+                            </Grid>
+                        </Border>
+
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ========================================================= -->
+            <!-- KOMPAKTES ERGEBNIS -->
+            <!-- ========================================================= -->
+
+            <TabItem x:Name="SimpleResultTab" Header="Ergebnis">
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="24">
+                        <TextBlock FontSize="24" FontWeight="SemiBold" Text="Dein Ergebnis" />
+                        <TextBlock Margin="0,5,0,18"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   TextWrapping="Wrap"
+                                   Text="Die wichtigsten Erkenntnisse der ausgewählten Messung – verständlich zusammengefasst." />
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="18" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Padding="20" Background="{DynamicResource SurfaceBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12">
+                                <StackPanel DataContext="{Binding SelectedRunPerformanceScore}"
+                                            VerticalAlignment="Center">
+                                    <TextBlock HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="Performance Score" />
+                                    <TextBlock Margin="0,8,0,0" HorizontalAlignment="Center"
+                                               FontSize="46" FontWeight="SemiBold"
+                                               Foreground="{Binding RatingBrush}"
+                                               Text="{Binding TotalScoreText, TargetNullValue=—}" />
+                                    <TextBlock HorizontalAlignment="Center" FontSize="20" FontWeight="SemiBold"
+                                               Foreground="{Binding RatingBrush}"
+                                               Text="{Binding GradeText, TargetNullValue=—}" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Padding="20" Background="{DynamicResource SurfaceBrush}"
+                                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12">
+                                <StackPanel>
+                                    <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="Wahrscheinlichstes Bottleneck" />
+                                    <TextBlock Margin="0,6,0,0" FontSize="22" FontWeight="SemiBold"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding SelectedRunBottleneck.TitleText, TargetNullValue='Noch kein Ergebnis vorhanden'}" />
+                                    <TextBlock Margin="0,10,0,0" TextWrapping="Wrap"
+                                               Text="{Binding SelectedRunBottleneck.DescriptionText}" />
+                                    <TextBlock Margin="0,12,0,0" FontWeight="SemiBold" TextWrapping="Wrap"
+                                               Text="{Binding SelectedRunBottleneck.RecommendationText}" />
+                                    <TextBlock Margin="0,10,0,0" Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="{Binding SelectedRunBottleneck.ConfidenceText, StringFormat='Vertrauen: {0}', TargetNullValue='Vertrauen: —'}" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Border Margin="0,18,0,0" Padding="20" Background="{DynamicResource SurfaceBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12">
+                            <StackPanel DataContext="{Binding SelectedRunPerformanceScore}">
+                                <TextBlock FontSize="17" FontWeight="SemiBold" Text="Kurzbewertung" />
+                                <TextBlock Margin="0,8,0,0" TextWrapping="Wrap"
+                                           Text="{Binding SummaryText, TargetNullValue='Wähle eine abgeschlossene Messung aus, um das Ergebnis anzuzeigen.'}" />
+                                <TextBlock Margin="0,8,0,0" Foreground="{DynamicResource TextSecondaryBrush}"
+                                           TextWrapping="Wrap" Text="{Binding BreakdownText}" />
+                                <TextBlock Margin="0,10,0,0" Foreground="{DynamicResource TextSecondaryBrush}"
+                                           TextWrapping="Wrap" Text="{Binding BreakdownExplanationText}" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Margin="0,18,0,0" Padding="20" Background="{DynamicResource SurfaceBrush}"
+                                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17" FontWeight="SemiBold" Text="Empfohlene nächste Schritte" />
+                                <ItemsControl Margin="0,10,0,0" ItemsSource="{Binding SelectedRunRecommendations}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Margin="0,0,0,10" Padding="14"
+                                                    Background="{DynamicResource SurfaceAltBrush}" CornerRadius="9">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="110" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock VerticalAlignment="Center" FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource PrimaryBrush}"
+                                                               Text="{Binding CategoryText}" />
+                                                    <StackPanel Grid.Column="1">
+                                                        <TextBlock FontWeight="SemiBold" Text="{Binding TitleText}" />
+                                                        <TextBlock Margin="0,6,0,0" FontWeight="SemiBold" Text="Nächster Schritt" />
+                                                        <TextBlock Margin="0,2,0,0" Foreground="{DynamicResource TextSecondaryBrush}"
+                                                                   TextWrapping="Wrap" Text="{Binding DescriptionText}" />
+                                                        <TextBlock Margin="0,7,0,0" FontWeight="SemiBold" Text="Erwartetes Ergebnis" />
+                                                        <TextBlock Margin="0,2,0,0" Foreground="{DynamicResource TextSecondaryBrush}"
+                                                                   TextWrapping="Wrap" Text="{Binding ExpectedEffectText}" />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap"
+                                           Text="Keine Empfehlungen bedeuten, dass noch keine geeignete Messung ausgewählt oder kein eindeutiges Problem erkannt wurde.">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedRunRecommendations.Count}" Value="0">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- ========================================================= -->
+            <!-- RUN-HISTORIE -->
+            <!-- ========================================================= -->
+
+            <TabItem x:Name="RunHistoryTab" Header="Gespeicherte Runs">
+                <Grid Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="12" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="16" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               Text="{Binding HistoryStatusText}" />
+
+                    <!-- Run-Liste -->
+                    <DataGrid Grid.Row="2"
+                              ItemsSource="{Binding Runs}"
+                              SelectedItem="{Binding SelectedRun}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              SelectionMode="Single"
+                              SelectionUnit="FullRow"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="Horizontal">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name"
+                                                Width="*"
+                                                MinWidth="200"
+                                                Binding="{Binding Name}" />
+
+                            <DataGridTextColumn Header="Gestartet"
+                                                Width="155"
+                                                Binding="{Binding StartedAtText}" />
+
+                            <DataGridTextColumn Header="Dauer"
+                                                Width="95"
+                                                Binding="{Binding DurationText}" />
+
+                            <DataGridTextColumn Header="Status"
+                                                Width="120"
+                                                Binding="{Binding StatusText}" />
+
+                            <DataGridTextColumn Header="Samples"
+                                                Width="90"
+                                                Binding="{Binding SampleCountText}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Run-Details -->
+                    <Border Grid.Row="4"
+                            Padding="18"
+                            Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="12">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="12" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="10" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0"
+                                       Grid.ColumnSpan="2"
+                                       FontSize="17"
+                                       FontWeight="SemiBold"
+                                       Text="Ausgewählter Run" />
+
+                            <TextBlock Grid.Row="2"
+                                       Grid.Column="0"
+                                       VerticalAlignment="Center"
+                                       FontWeight="SemiBold"
+                                       Text="Name" />
+
+                            <TextBox Grid.Row="2"
+                                     Grid.Column="1"
+                                     MinHeight="32"
+                                     Padding="8,4"
+                                     Text="{Binding SelectedRunName,
+                                                    UpdateSourceTrigger=PropertyChanged}" />
+
+                            <TextBlock Grid.Row="4"
+                                       Grid.Column="0"
+                                       FontWeight="SemiBold"
+                                       Text="Gestartet" />
+
+                            <TextBlock Grid.Row="4"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedRun.StartedAtText,
+                                                      Mode=OneWay,
+                                                      TargetNullValue=—}" />
+
+                            <TextBlock Grid.Row="6"
+                                       Grid.Column="0"
+                                       FontWeight="SemiBold"
+                                       Text="Beendet" />
+
+                            <TextBlock Grid.Row="6"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedRun.EndedAtText,
+                                                      Mode=OneWay,
+                                                      TargetNullValue=—}" />
+
+                            <TextBlock Grid.Row="8"
+                                       Grid.Column="0"
+                                       FontWeight="SemiBold"
+                                       Text="Dauer" />
+
+                            <TextBlock Grid.Row="8"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedRun.DurationText,
+                                                      Mode=OneWay,
+                                                      TargetNullValue=—}" />
+
+                            <TextBlock Grid.Row="10"
+                                       Grid.Column="0"
+                                       FontWeight="SemiBold"
+                                       Text="Messwerte" />
+
+                            <TextBlock Grid.Row="10"
+                                       Grid.Column="1"
+                                       Text="{Binding SelectedRun.SampleCountText,
+                                                      Mode=OneWay,
+                                                      TargetNullValue=—}" />
+                        </Grid>
+                    </Border>
+
+                    <!-- Aktionen -->
+                    <Grid Grid.Row="6">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="8" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <WrapPanel Grid.Row="0">
+                            <Button MinWidth="145"
+                                    Height="38"
+                                    Margin="0,0,12,8"
+                                    Padding="16,0"
+                                    Command="{Binding RenameRunCommand}"
+                                    Content="Run umbenennen" />
+
+                            <Button MinWidth="145"
+                                    Height="38"
+                                    Margin="0,0,12,8"
+                                    Padding="16,0"
+                                    Command="{Binding DeleteRunCommand}"
+                                    Content="Run löschen" />
+
+                            <Button MinWidth="145"
+                                    Height="38"
+                                    Margin="0,0,12,8"
+                                    Padding="16,0"
+                                    Command="{Binding ExportCsvCommand}"
+                                    Content="Als CSV exportieren" />
+
+                            <Button MinWidth="145"
+                                    Height="38"
+                                    Margin="0,0,0,8"
+                                    Padding="16,0"
+                                    Command="{Binding ExportJsonCommand}"
+                                    Content="Als JSON exportieren" />
+                        </WrapPanel>
+
+                        <TextBlock Grid.Row="2"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   TextWrapping="Wrap"
+                                   Text="{Binding HistoryActionStatusText}" />
+
+                        <TextBlock Grid.Row="4"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   TextWrapping="Wrap"
+                                   Text="{Binding ExportStatusText}" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <!-- ========================================================= -->
+            <!-- RUN-AUSWERTUNG -->
+            <!-- ========================================================= -->
+
+            <TabItem x:Name="AdvancedAnalysisTab" Header="Messdaten &amp; Diagnose" Visibility="Collapsed">
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+
+                    <Grid Margin="24">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="16" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="20" />
+
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!-- Überschrift -->
+                        <StackPanel Grid.Row="0">
+                            <TextBlock FontSize="20"
+                                       FontWeight="SemiBold"
+                                       Text="{Binding SelectedRun.Name,
+                                                      Mode=OneWay,
+                                                      TargetNullValue=Kein Run ausgewählt}" />
+
+                            <TextBlock Margin="0,5,0,0"
+                                       Foreground="{DynamicResource TextSecondaryBrush}"
+                                       Text="{Binding AnalysisStatusText}" />
+                        </StackPanel>
+                        
+                        <!-- Sample-Übersicht -->
+                        <Border Grid.Row="2"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="Gespeicherte Messwerte" />
+
+                                    <TextBlock Margin="0,4,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="{Binding SelectedRunSampleCounts.StatusText,
+                                                              Mode=OneWay,
+                                                              TargetNullValue=Keine Sample-Informationen verfügbar.}" />
+                                </StackPanel>
+
+                                <UniformGrid Grid.Row="2"
+                                             Columns="4">
+
+                                    <StackPanel Margin="0,0,20,10">
+                                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   Text="Gesamt" />
+
+                                        <TextBlock FontFamily="Consolas"
+                                                   FontSize="18"
+                                                   FontWeight="SemiBold"
+                                                   Text="{Binding SelectedRunSampleCounts.TotalText,
+                                                                  Mode=OneWay,
+                                                                  TargetNullValue=—}" />
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0,0,20,10">
+                                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   Text="System" />
+
+                                        <TextBlock FontFamily="Consolas"
+                                                   FontSize="18"
+                                                   Text="{Binding SelectedRunSampleCounts.SystemText,
+                                                                  Mode=OneWay,
+                                                                  TargetNullValue=—}" />
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0,0,20,10">
+                                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   Text="Netzwerk" />
+
+                                        <TextBlock FontFamily="Consolas"
+                                                   FontSize="18"
+                                                   Text="{Binding SelectedRunSampleCounts.NetworkText,
+                                                                  Mode=OneWay,
+                                                                  TargetNullValue=—}" />
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0,0,20,10">
+                                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   Text="Hardware" />
+
+                                        <TextBlock FontFamily="Consolas"
+                                                   FontSize="18"
+                                                   Text="{Binding SelectedRunSampleCounts.HardwareText,
+                                                                  Mode=OneWay,
+                                                                  TargetNullValue=—}" />
+                                    </StackPanel>
+                                </UniformGrid>
+
+                                <UniformGrid Grid.Row="4"
+                                             Columns="4">
+
+                                    <StackPanel Margin="0,0,20,0">
+                                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   Text="CPU-Threads" />
+
+                                        <TextBlock FontFamily="Consolas"
+                                                   FontSize="18"
+                                                   Text="{Binding SelectedRunSampleCounts.CpuCoreText,
+                                                                  Mode=OneWay,
+                                                                  TargetNullValue=—}" />
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0,0,20,0">
+                                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   Text="Datenträger" />
+
+                                        <TextBlock FontFamily="Consolas"
+                                                   FontSize="18"
+                                                   Text="{Binding SelectedRunSampleCounts.DiskText,
+                                                                  Mode=OneWay,
+                                                                  TargetNullValue=—}" />
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0,0,20,0">
+                                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   Text="Prozesse" />
+
+                                        <TextBlock FontFamily="Consolas"
+                                                   FontSize="18"
+                                                   Text="{Binding SelectedRunSampleCounts.ProcessText,
+                                                                  Mode=OneWay,
+                                                                  TargetNullValue=—}" />
+                                    </StackPanel>
+
+                                    <StackPanel Margin="0,0,20,0">
+                                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   Text="Netzwerkvorfälle" />
+
+                                        <TextBlock FontFamily="Consolas"
+                                                   FontSize="18"
+                                                   Text="{Binding SelectedRunSampleCounts.NetworkIncidentsText,
+                                                                  Mode=OneWay,
+                                                                  TargetNullValue=—}" />
+                                    </StackPanel>
+                                </UniformGrid>
+                            </Grid>
+                        </Border>
+
+                        <!-- Systemanalyse -->
+                        <Border Grid.Row="4"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="250" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Systemanalyse" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="CPU durchschnittlich" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.AverageCpuText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="CPU maximal" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.MaximumCpuText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="RAM durchschnittlich" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.AverageMemoryText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="RAM maximal" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.MaximumMemoryText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Maximal verwendeter RAM" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.MaximumUsedMemoryText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+                            </Grid>
+                        </Border>
+
+                        <!-- CPU-Hardwareanalyse -->
+                        <Border Grid.Row="6"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="250" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="CPU-Hardwareanalyse" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Prozessor" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="1"
+                                           TextWrapping="Wrap"
+                                           Text="{Binding SelectedRunAnalysis.CpuNameText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Temperatur durchschnittlich" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.CpuAverageTemperatureText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Package-Temperatur maximal" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.CpuMaximumTemperatureText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Kerntemperatur maximal" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.CpuMaximumCoreTemperatureText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Takt durchschnittlich" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.CpuAverageClockText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="12"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Takt Minimum / Maximum" />
+
+                                <StackPanel Grid.Row="12"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal">
+
+                                    <TextBlock FontFamily="Consolas"
+                                               Text="{Binding SelectedRunAnalysis.CpuMinimumClockText,
+                                                              Mode=OneWay,
+                                                              TargetNullValue=—}" />
+
+                                    <TextBlock Margin="6,0"
+                                               Text="/" />
+
+                                    <TextBlock FontFamily="Consolas"
+                                               Text="{Binding SelectedRunAnalysis.CpuMaximumClockText,
+                                                              Mode=OneWay,
+                                                              TargetNullValue=—}" />
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Leistung durchschnittlich" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.CpuAveragePowerText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Leistung maximal" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.CpuMaximumPowerText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+                            </Grid>
+                        </Border>
+                        
+                        <!-- CPU-Threadanalyse -->
+                        <Border Grid.Row="8"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="CPU-Threadanalyse" />
+
+                                    <TextBlock Margin="0,4,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="Auslastung der einzelnen logischen Prozessoren" />
+                                </StackPanel>
+
+                                <Border Grid.Row="2"
+                                        Padding="12"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        CornerRadius="10">
+
+                                    <StackPanel>
+                                        <TextBlock FontWeight="SemiBold"
+                                                   Text="Am stärksten belasteter Thread" />
+
+                                        <TextBlock Margin="0,4,0,0"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding MostLoadedCpuThreadText,
+                                                                  Mode=OneWay}" />
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Grid.Row="4"
+                                        Padding="12"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        CornerRadius="10">
+
+                                    <StackPanel>
+                                        <TextBlock FontWeight="SemiBold"
+                                                   Text="Einschätzung" />
+
+                                        <TextBlock Margin="0,4,0,0"
+                                                   LineHeight="20"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding CpuThreadAssessmentText,
+                                                                  Mode=OneWay}" />
+                                    </StackPanel>
+                                </Border>
+
+                                <DataGrid Grid.Row="6"
+                                          MinHeight="210"
+                                          MaxHeight="420"
+                                          ItemsSource="{Binding SelectedRunCpuCoreAnalyses}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          HeadersVisibility="Column"
+                                          GridLinesVisibility="Horizontal">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Thread"
+                                                            Width="135"
+                                                            Binding="{Binding ThreadText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Ø Last"
+                                                            Width="90"
+                                                            Binding="{Binding AverageLoadText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Maximum"
+                                                            Width="90"
+                                                            Binding="{Binding MaximumLoadText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Über 80 %"
+                                                            Width="95"
+                                                            Binding="{Binding Above80Text,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Über 90 %"
+                                                            Width="95"
+                                                            Binding="{Binding Above90Text,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Über 95 %"
+                                                            Width="95"
+                                                            Binding="{Binding Above95Text,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Bewertung"
+                                                            Width="*"
+                                                            MinWidth="230"
+                                                            Binding="{Binding AssessmentText,
+                                                                              Mode=OneWay}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+
+                        <!-- GPU-Hardwareanalyse -->
+                        <Border Grid.Row="10"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="250" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="GPU-Hardwareanalyse" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Grafikkarte" />
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.Column="1"
+                                           TextWrapping="Wrap"
+                                           Text="{Binding SelectedRunAnalysis.GpuNameText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Auslastung durchschnittlich" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.GpuAverageLoadText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Auslastung maximal" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.GpuMaximumLoadText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Temperatur durchschnittlich" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.GpuAverageTemperatureText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Temperatur maximal" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.GpuMaximumTemperatureText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="12"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Hotspot maximal" />
+
+                                <TextBlock Grid.Row="12"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.GpuMaximumHotspotText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Takt durchschnittlich" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.GpuAverageClockText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Takt Minimum / Maximum" />
+
+                                <StackPanel Grid.Row="16"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal">
+
+                                    <TextBlock FontFamily="Consolas"
+                                               Text="{Binding SelectedRunAnalysis.GpuMinimumClockText,
+                                                              Mode=OneWay,
+                                                              TargetNullValue=—}" />
+
+                                    <TextBlock Margin="6,0"
+                                               Text="/" />
+
+                                    <TextBlock FontFamily="Consolas"
+                                               Text="{Binding SelectedRunAnalysis.GpuMaximumClockText,
+                                                              Mode=OneWay,
+                                                              TargetNullValue=—}" />
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="18"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Leistung Ø / Maximum" />
+
+                                <StackPanel Grid.Row="18"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal">
+
+                                    <TextBlock FontFamily="Consolas"
+                                               Text="{Binding SelectedRunAnalysis.GpuAveragePowerText,
+                                                              Mode=OneWay,
+                                                              TargetNullValue=—}" />
+
+                                    <TextBlock Margin="6,0"
+                                               Text="/" />
+
+                                    <TextBlock FontFamily="Consolas"
+                                               Text="{Binding SelectedRunAnalysis.GpuMaximumPowerText,
+                                                              Mode=OneWay,
+                                                              TargetNullValue=—}" />
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="20"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="VRAM maximal verwendet" />
+
+                                <TextBlock Grid.Row="20"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.GpuMaximumMemoryText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+                            </Grid>
+                        </Border>
+
+                        <!-- Netzwerkanalyse -->
+                        <Border Grid.Row="12"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="250" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="16" />
+
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+
+                                    <RowDefinition Height="18" />
+
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           Grid.ColumnSpan="2"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Netzwerkanalyse" />
+
+                                <!-- Gateway -->
+
+                                <TextBlock Grid.Row="2"
+                                           Grid.ColumnSpan="2"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Text="Standardgateway" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Latenz durchschnittlich" />
+
+                                <TextBlock Grid.Row="4"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.AverageGatewayLatencyText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Latenz maximal" />
+
+                                <TextBlock Grid.Row="6"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.MaximumGatewayLatencyText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Fehlgeschlagene Messungen" />
+
+                                <TextBlock Grid.Row="8"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedRunAnalysis.GatewayFailuresText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Maximale Ausfallserie" />
+
+                                <TextBlock Grid.Row="10"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedRunAnalysis.MaximumGatewayFailureSequenceText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <!-- Internet -->
+
+                                <TextBlock Grid.Row="12"
+                                           Grid.ColumnSpan="2"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Text="Internetverbindung" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Latenz durchschnittlich" />
+
+                                <TextBlock Grid.Row="14"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.AverageInternetLatencyText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Latenz maximal" />
+
+                                <TextBlock Grid.Row="16"
+                                           Grid.Column="1"
+                                           FontFamily="Consolas"
+                                           Text="{Binding SelectedRunAnalysis.MaximumInternetLatencyText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="18"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Fehlgeschlagene Messungen" />
+
+                                <TextBlock Grid.Row="18"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedRunAnalysis.InternetFailuresText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+
+                                <TextBlock Grid.Row="20"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Text="Maximale Ausfallserie" />
+
+                                <TextBlock Grid.Row="20"
+                                           Grid.Column="1"
+                                           Text="{Binding SelectedRunAnalysis.MaximumInternetFailureSequenceText,
+                                                          Mode=OneWay,
+                                                          TargetNullValue=—}" />
+                            </Grid>
+                        </Border>
+                        
+                        <!-- Datenträgeranalyse -->
+                        <Border Grid.Row="14"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="Datenträgeranalyse" />
+
+                                    <TextBlock Margin="0,4,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="Durchschnitt / Maximum während des Runs" />
+                                </StackPanel>
+
+                                <DataGrid Grid.Row="2"
+                                          MinHeight="150"
+                                          MaxHeight="320"
+                                          ItemsSource="{Binding SelectedRunDiskAnalyses}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          HeadersVisibility="Column"
+                                          GridLinesVisibility="Horizontal">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Datenträger"
+                                                            Width="220"
+                                                            Binding="{Binding DeviceNameText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Temperatur"
+                                                            Width="150"
+                                                            Binding="{Binding TemperatureText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Aktivität"
+                                                            Width="155"
+                                                            Binding="{Binding ActivityText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Lesen"
+                                                            Width="155"
+                                                            Binding="{Binding ReadRateText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Schreiben"
+                                                            Width="155"
+                                                            Binding="{Binding WriteRateText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Speicher"
+                                                            Width="180"
+                                                            Binding="{Binding SpaceText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Lebenszustand"
+                                                            Width="115"
+                                                            Binding="{Binding LifeText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Bewertung"
+                                                            Width="190"
+                                                            Binding="{Binding AssessmentText,
+                                                                              Mode=OneWay}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+
+                        
+                        <!-- Prozessanalyse -->
+                        <Border Grid.Row="16"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="Prozessanalyse" />
+
+                                    <TextBlock Margin="0,4,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="Aktivste Prozesse während des Runs" />
+                                </StackPanel>
+
+                                <Border Grid.Row="2"
+                                        Padding="12"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        CornerRadius="10">
+
+                                    <StackPanel>
+                                        <TextBlock FontWeight="SemiBold"
+                                                   Text="Wahrscheinliche Hauptanwendung" />
+
+                                        <TextBlock Margin="0,4,0,0"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding DominantProcessText,
+                                                                  Mode=OneWay}" />
+                                    </StackPanel>
+                                </Border>
+
+                                <DataGrid Grid.Row="4"
+                                          MinHeight="180"
+                                          MaxHeight="380"
+                                          ItemsSource="{Binding SelectedRunProcessAnalyses}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          HeadersVisibility="Column"
+                                          GridLinesVisibility="Horizontal">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Prozess"
+                                                            Width="180"
+                                                            Binding="{Binding ProcessNameText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="CPU"
+                                                            Width="145"
+                                                            Binding="{Binding CpuText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="RAM max."
+                                                            Width="100"
+                                                            Binding="{Binding WorkingSetText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Privat max."
+                                                            Width="100"
+                                                            Binding="{Binding PrivateMemoryText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Lesen max."
+                                                            Width="110"
+                                                            Binding="{Binding ReadRateText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Schreiben max."
+                                                            Width="115"
+                                                            Binding="{Binding WriteRateText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Vordergrund"
+                                                            Width="105"
+                                                            Binding="{Binding ForegroundText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Bewertung"
+                                                            Width="185"
+                                                            Binding="{Binding AssessmentText,
+                                                                              Mode=OneWay}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="18"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17" FontWeight="SemiBold" Text="Analysequalität und Version" />
+                                <TextBlock Margin="0,6,0,0" Text="{Binding AnalysisVersionText}" />
+                                <TextBlock Margin="0,4,0,0" FontWeight="SemiBold" Text="{Binding SelectedRunAnalysisQuality.Summary, TargetNullValue='Keine Qualitätsprüfung'}" />
+                                <TextBlock Text="{Binding SelectedRunAnalysisQuality.ScorePercent, StringFormat='Qualität: {0:F0} %'}" />
+                                <ItemsControl ItemsSource="{Binding SelectedRunAnalysisQuality.Issues}">
+                                    <ItemsControl.ItemTemplate><DataTemplate><TextBlock Text="{Binding StringFormat='Ø {0}'}" /></DataTemplate></ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Grid.Row="20"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17" FontWeight="SemiBold" Text="Manuelle Hauptanwendungs- und Framequellenauswahl" />
+                                <Grid Margin="0,10,0,0">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="16" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Hauptanwendung" />
+                                        <ComboBox Margin="0,4,0,0" ItemsSource="{Binding SelectedRunProcessAnalyses}" SelectedItem="{Binding SelectedManualMainProcess}" DisplayMemberPath="ProcessNameText" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Technische Framequelle" />
+                                        <ComboBox Margin="0,4,0,0" ItemsSource="{Binding SelectedRunFrameAnalyses}" SelectedItem="{Binding SelectedManualFrameProcess}" DisplayMemberPath="ApplicationText" />
+                                    </StackPanel>
+                                </Grid>
+                                <CheckBox Margin="0,10,0,0" Content="Zuordnung für zukünftige Runs derselben Anwendung merken" IsChecked="{Binding RememberManualApplicationMapping}" />
+                                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                    <Button Padding="14,6" Content="Zuordnung speichern" Command="{Binding ApplyApplicationOverrideCommand}" />
+                                    <TextBlock Margin="12,7,0,0" Text="{Binding ManualApplicationSelectionStatusText}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- FPS- und Frametime-Analyse -->
+                        <Border Grid.Row="22"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="FPS- und Frametime-Analyse" />
+
+                                    <TextBlock Margin="0,4,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="PresentMon-Auswertung pro erkanntem Grafikprozess" />
+                                </StackPanel>
+
+                                <DataGrid Grid.Row="2"
+                                          MinHeight="180"
+                                          MaxHeight="380"
+                                          ItemsSource="{Binding SelectedRunFrameAnalyses}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          HeadersVisibility="Column"
+                                          GridLinesVisibility="Horizontal">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Auswahl"
+                                                            Width="165"
+                                                            Binding="{Binding SelectionText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Framequelle"
+                                                            Width="210"
+                                                            Binding="{Binding ApplicationText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Zugeordnete Hauptanwendung"
+                                                            Width="220"
+                                                            Binding="{Binding MatchedApplicationText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Zuordnungsgrund"
+                                                            Width="210"
+                                                            Binding="{Binding MatchReasonText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Score"
+                                                            Width="75"
+                                                            Binding="{Binding SelectionScoreText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Belege"
+                                                            Width="250"
+                                                            Binding="{Binding ProcessEvidenceText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Frames"
+                                                            Width="80"
+                                                            Binding="{Binding FrameCountText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Ø FPS"
+                                                            Width="90"
+                                                            Binding="{Binding AverageFpsText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="1 % Low"
+                                                            Width="95"
+                                                            Binding="{Binding OnePercentLowText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="0,1 % Low"
+                                                            Width="100"
+                                                            Binding="{Binding PointOnePercentLowText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Ø Frametime"
+                                                            Width="105"
+                                                            Binding="{Binding AverageFrameTimeText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="P95"
+                                                            Width="85"
+                                                            Binding="{Binding P95FrameTimeText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="P99"
+                                                            Width="85"
+                                                            Binding="{Binding P99FrameTimeText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Maximum"
+                                                            Width="95"
+                                                            Binding="{Binding MaximumFrameTimeText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Spikes"
+                                                            Width="*"
+                                                            MinWidth="260"
+                                                            Binding="{Binding SpikeCountText,
+                                                                              Mode=OneWay}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+
+                        <!-- Automatische Diagnose -->
+                        <Border Grid.Row="24"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="Automatische Diagnose" />
+
+                                    <TextBlock Margin="0,4,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="{Binding DiagnosticStatusText,
+                                                              Mode=OneWay}" />
+                                </StackPanel>
+
+                                <Border Grid.Row="2"
+                                        Padding="12"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        CornerRadius="10">
+
+                                    <StackPanel>
+                                        <TextBlock FontWeight="SemiBold"
+                                                   Text="Zusammenfassung" />
+
+                                        <TextBlock Margin="0,4,0,0"
+                                                   FontSize="16"
+                                                   Text="{Binding DiagnosticSummaryText,
+                                                                  Mode=OneWay}" />
+                                    </StackPanel>
+                                </Border>
+
+                                <DataGrid Grid.Row="4"
+                                          MinHeight="220"
+                                          MaxHeight="480"
+                                          ItemsSource="{Binding SelectedRunDiagnosticFindings}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          HeadersVisibility="Column"
+                                          GridLinesVisibility="Horizontal">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Stufe" Width="90">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock VerticalAlignment="Center" FontWeight="SemiBold"
+                                                               Foreground="{Binding SeverityBrush}"
+                                                               Text="{Binding SeverityText}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTextColumn Header="Kategorie"
+                                                            Width="105"
+                                                            Binding="{Binding CategoryText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Problem"
+                                                            Width="220"
+                                                            Binding="{Binding TitleText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Beschreibung"
+                                                            Width="300"
+                                                            Binding="{Binding DescriptionText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Empfehlung"
+                                                            Width="*"
+                                                            MinWidth="300"
+                                                            Binding="{Binding RecommendationText,
+                                                                              Mode=OneWay}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                        
+                        <!-- Ereignis-Timeline -->
+                        <Border Grid.Row="26"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="Ereignis-Timeline" />
+
+                                    <TextBlock Margin="0,4,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="{Binding TimelineStatusText,
+                                                              Mode=OneWay}" />
+                                </StackPanel>
+
+                                <Border Grid.Row="2"
+                                        Padding="12"
+                                        Background="{DynamicResource SurfaceAltBrush}"
+                                        CornerRadius="10">
+
+                                    <StackPanel>
+                                        <TextBlock FontWeight="SemiBold"
+                                                   Text="Zusammenfassung" />
+
+                                        <TextBlock Margin="0,4,0,0"
+                                                   FontSize="16"
+                                                   Text="{Binding TimelineSummaryText,
+                                                                  Mode=OneWay}" />
+                                    </StackPanel>
+                                </Border>
+
+                                <DataGrid Grid.Row="4"
+                                          MinHeight="240"
+                                          MaxHeight="520"
+                                          ItemsSource="{Binding SelectedRunTimelinePeriods}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          HeadersVisibility="Column"
+                                          GridLinesVisibility="Horizontal">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Zeitraum"
+                                                            Width="145"
+                                                            Binding="{Binding TimeText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Dauer"
+                                                            Width="85"
+                                                            Binding="{Binding DurationText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Stufe"
+                                                            Width="85"
+                                                            Binding="{Binding SeverityText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Typ"
+                                                            Width="95"
+                                                            Binding="{Binding KindText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Kategorie"
+                                                            Width="105"
+                                                            Binding="{Binding CategoryText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Quelle"
+                                                            Width="180"
+                                                            Binding="{Binding SourceText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Ereignis"
+                                                            Width="245"
+                                                            Binding="{Binding TitleText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Messpunkte"
+                                                            Width="100"
+                                                            Binding="{Binding EventCountText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Ø Wert"
+                                                            Width="115"
+                                                            Binding="{Binding AverageValueText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Maximum"
+                                                            Width="115"
+                                                            Binding="{Binding MaximumValueText,
+                                                                              Mode=OneWay}" />
+
+                                        <DataGridTextColumn Header="Beschreibung"
+                                                            Width="*"
+                                                            MinWidth="380"
+                                                            Binding="{Binding DescriptionText,
+                                                                              Mode=OneWay}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+
+                        <!-- Netzwerkvorfälle -->
+                        <Border Grid.Row="28"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Erkannte Netzwerkvorfälle" />
+
+                                <DataGrid Grid.Row="2"
+                                          MinHeight="140"
+                                          MaxHeight="300"
+                                          ItemsSource="{Binding SelectedRunNetworkIncidents}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          HeadersVisibility="Column"
+                                          GridLinesVisibility="Horizontal">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Ziel"
+                                                            Width="140"
+                                                            Binding="{Binding TargetText}" />
+
+                                        <DataGridTextColumn Header="Adresse"
+                                                            Width="140"
+                                                            Binding="{Binding AddressText}" />
+
+                                        <DataGridTextColumn Header="Beginn"
+                                                            Width="165"
+                                                            Binding="{Binding StartedAtText}" />
+
+                                        <DataGridTextColumn Header="Dauer"
+                                                            Width="120"
+                                                            Binding="{Binding DurationText}" />
+
+                                        <DataGridTextColumn Header="Fehler"
+                                                            Width="80"
+                                                            Binding="{Binding FailureCountText}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+        
+            <!-- ========================================================= -->
+            <!-- PERFORMANCE SUITE -->
+            <!-- ========================================================= -->
+            <TabItem x:Name="PerformanceTab" Header="Analyse &amp; Empfehlungen" Visibility="Collapsed">
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel Margin="24">
+
+                        <TextBlock FontSize="22"
+                                   FontWeight="SemiBold"
+                                   Text="Gaming-Performance" />
+
+                        <TextBlock Margin="0,4,0,18"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                   Text="Score, Empfehlungen, Timeline 3.0, Heatmap, Profile, Regression, Statistiken und Trends" />
+
+                        <Border Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="150" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel>
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="{Binding SelectedRunBottleneck.TitleText,
+                                                              Mode=OneWay,
+                                                              TargetNullValue='Kein Bottleneck analysiert'}" />
+                                    <TextBlock Margin="0,6,0,0"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding SelectedRunBottleneck.DescriptionText,
+                                                              Mode=OneWay}" />
+                                    <TextBlock Margin="0,8,0,0"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding SelectedRunBottleneck.RecommendationText,
+                                                              Mode=OneWay}" />
+                                    <TextBlock Margin="0,8,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding SelectedRunBottleneck.ScoresText,
+                                                              Mode=OneWay}" />
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <TextBlock HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="Vertrauen" />
+                                    <TextBlock Margin="0,4,0,0"
+                                               HorizontalAlignment="Center"
+                                               FontSize="28"
+                                               FontWeight="SemiBold"
+                                               Text="{Binding SelectedRunBottleneck.ConfidenceText,
+                                                              Mode=OneWay,
+                                                              TargetNullValue=—}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Grid Margin="0,18,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Padding="16"
+                                    Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="12">
+                                <StackPanel DataContext="{Binding SelectedRunPerformanceScore}">
+                                    <TextBlock FontWeight="SemiBold"
+                                               Text="Performance Score" />
+                                    <TextBlock Margin="0,6,0,0"
+                                               FontSize="30"
+                                               FontWeight="SemiBold"
+                                               Foreground="{Binding RatingBrush}"
+                                               Text="{Binding TotalScoreText,
+                                                              TargetNullValue=—}" />
+                                    <TextBlock FontSize="20"
+                                               FontWeight="SemiBold"
+                                               Foreground="{Binding RatingBrush}"
+                                               Text="{Binding GradeText}" />
+                                    <TextBlock Margin="0,6,0,0"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding SummaryText}" />
+                                    <TextBlock Margin="0,6,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding BreakdownText}" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2"
+                                    Padding="16"
+                                    Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="12">
+                                <StackPanel>
+                                    <TextBlock FontWeight="SemiBold"
+                                               Text="Spielprofil" />
+                                    <TextBlock Margin="0,6,0,0"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding SelectedGameProfileText}" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="4"
+                                    Padding="16"
+                                    Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="12">
+                                <StackPanel DataContext="{Binding SelectedRunRegression}">
+                                    <TextBlock FontWeight="SemiBold"
+                                               Text="Performance-Regression" />
+                                    <TextBlock Margin="0,6,0,0"
+                                               FontSize="18"
+                                               FontWeight="SemiBold"
+                                               Text="{Binding StatusText,
+                                                              TargetNullValue='Keine Vergleichsbasis'}" />
+                                    <TextBlock Margin="0,4,0,0"
+                                               TextWrapping="Wrap"
+                                               Text="{Binding ExplanationText}" />
+                                    <TextBlock Margin="0,6,0,0"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="{Binding ScoreText}" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Border Margin="0,18,0,0"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Empfehlungen" />
+                                <DataGrid Margin="0,10,0,0"
+                                          MinHeight="180"
+                                          ItemsSource="{Binding SelectedRunRecommendations}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          GridLinesVisibility="Horizontal">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Priorität"
+                                                            Width="70"
+                                                            Binding="{Binding PriorityText}" />
+                                        <DataGridTextColumn Header="Bereich"
+                                                            Width="110"
+                                                            Binding="{Binding CategoryText}" />
+                                        <DataGridTextColumn Header="Empfehlung"
+                                                            Width="240"
+                                                            Binding="{Binding TitleText}" />
+                                        <DataGridTextColumn Header="Maßnahme"
+                                                            Width="*"
+                                                            MinWidth="360"
+                                                            Binding="{Binding DescriptionText}" />
+                                        <DataGridTextColumn Header="Erwarteter Effekt"
+                                                            Width="250"
+                                                            Binding="{Binding ExpectedEffectText}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Margin="0,18,0,0"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Performance-Heatmap" />
+                                <TextBlock Margin="0,4,0,10"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Text="Hohe Intensität markiert belastete Zeitsegmente; bei FPS bedeutet hohe Intensität niedrige Bildrate." />
+                                <ItemsControl ItemsSource="{Binding SelectedRunHeatmap}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Width="112"
+                                                    Height="62"
+                                                    Margin="3"
+                                                    Padding="6"
+                                                    Background="{Binding Background}"
+                                                    CornerRadius="10">
+                                                <StackPanel>
+                                                    <TextBlock FontWeight="SemiBold"
+                                                               Text="{Binding MetricText}" />
+                                                    <TextBlock Text="{Binding ValueText}" />
+                                                    <TextBlock FontSize="10"
+                                                               Foreground="#555555"
+                                                               Text="{Binding TimeText}" />
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Margin="0,18,0,0"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Timeline 3.0 — Ursache – Auswirkung – Erholung" />
+                                <DataGrid Margin="0,10,0,0"
+                                          MinHeight="220"
+                                          MaxHeight="500"
+                                          ItemsSource="{Binding SelectedRunTimelineStories}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          GridLinesVisibility="Horizontal">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Zeit"
+                                                            Width="105"
+                                                            Binding="{Binding TimeText}" />
+                                        <DataGridTextColumn Header="Dauer"
+                                                            Width="85"
+                                                            Binding="{Binding DurationText}" />
+                                        <DataGridTextColumn Header="Ereignis"
+                                                            Width="220"
+                                                            Binding="{Binding TitleText}" />
+                                        <DataGridTextColumn Header="Ursache"
+                                                            Width="*"
+                                                            MinWidth="300"
+                                                            Binding="{Binding CauseText}" />
+                                        <DataGridTextColumn Header="Auswirkung"
+                                                            Width="280"
+                                                            Binding="{Binding ImpactText}" />
+                                        <DataGridTextColumn Header="Erholung"
+                                                            Width="280"
+                                                            Binding="{Binding RecoveryText}" />
+                                        <DataGridTextColumn Header="Vertrauen"
+                                                            Width="85"
+                                                            Binding="{Binding ConfidenceText}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+
+                        <Grid Margin="0,18,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="340" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Padding="18"
+                                    Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="12">
+                                <StackPanel DataContext="{Binding SelectedGameSessionStatistics}">
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="Session-Statistiken" />
+                                    <TextBlock Margin="0,8,0,0"
+                                               FontSize="18"
+                                               FontWeight="SemiBold"
+                                               Text="{Binding TitleText,
+                                                              TargetNullValue=—}" />
+                                    <TextBlock Margin="0,8,0,0"
+                                               Text="{Binding RunCountText,
+                                                              StringFormat='Runs: {0}'}" />
+                                    <TextBlock Text="{Binding TotalDurationText,
+                                                              StringFormat='Gesamtdauer: {0}'}" />
+                                    <TextBlock Text="{Binding ScoreText,
+                                                              StringFormat='Score: {0}'}" />
+                                    <TextBlock Text="{Binding FpsText,
+                                                              StringFormat='FPS: {0}'}" />
+                                    <TextBlock Text="{Binding LowFpsText,
+                                                              StringFormat='1-%-Low: {0}'}" />
+                                    <TextBlock Text="{Binding P99Text,
+                                                              StringFormat='P99: {0}'}" />
+                                    <TextBlock Text="{Binding StutterText}" />
+                                    <TextBlock Text="{Binding BottleneckText,
+                                                              StringFormat='Häufigstes Bottleneck: {0}'}" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2"
+                                    Padding="18"
+                                    Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="12">
+                                <StackPanel>
+                                    <TextBlock FontSize="17"
+                                               FontWeight="SemiBold"
+                                               Text="Trends" />
+                                    <DataGrid Margin="0,10,0,0"
+                                              MinHeight="240"
+                                              MaxHeight="480"
+                                              ItemsSource="{Binding SelectedGameTrends}"
+                                              AutoGenerateColumns="False"
+                                              IsReadOnly="True"
+                                              CanUserAddRows="False"
+                                              CanUserDeleteRows="False"
+                                              GridLinesVisibility="Horizontal">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Datum"
+                                                                Width="130"
+                                                                Binding="{Binding DateText}" />
+                                            <DataGridTextColumn Header="Run"
+                                                                Width="180"
+                                                                Binding="{Binding RunNameText}" />
+                                            <DataGridTextColumn Header="Score"
+                                                                Width="65"
+                                                                Binding="{Binding ScoreText}" />
+                                            <DataGridTextColumn Header="FPS"
+                                                                Width="65"
+                                                                Binding="{Binding FpsText}" />
+                                            <DataGridTextColumn Header="1-%-Low"
+                                                                Width="70"
+                                                                Binding="{Binding LowText}" />
+                                            <DataGridTextColumn Header="P99"
+                                                                Width="80"
+                                                                Binding="{Binding P99Text}" />
+                                            <DataGridTextColumn Header="GPU max."
+                                                                Width="85"
+                                                                Binding="{Binding TemperatureText}" />
+                                            <DataGridTextColumn Header="Stutter"
+                                                                Width="65"
+                                                                Binding="{Binding StutterText}" />
+                                            <DataGridTextColumn Header="Bottleneck"
+                                                                Width="*"
+                                                                Binding="{Binding BottleneckText}" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <Grid Margin="0,18,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="16" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel>
+                                <TextBlock Margin="0,0,0,8"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="FPS-Verlauf" />
+                                <controls:MetricLineChart Height="250"
+                                                          Metric="Fps"
+                                                          ItemsSource="{Binding SelectedRunFrameChartPoints}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Margin="0,0,0,8"
+                                           FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Frametime-Verlauf" />
+                                <controls:MetricLineChart Height="250"
+                                                          Metric="FrameTime"
+                                                          ItemsSource="{Binding SelectedRunFrameChartPoints}" />
+                            </StackPanel>
+                        </Grid>
+
+                        <Border Margin="0,18,0,0"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Stutter-Analyse" />
+
+                                <TextBlock Margin="0,4,0,12"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           TextWrapping="Wrap"
+                                           Text="{Binding StutterSummaryText}" />
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="280" />
+                                        <ColumnDefinition Width="16" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel>
+                                        <TextBlock Margin="0,0,0,8"
+                                                   FontWeight="SemiBold"
+                                                   Text="Bottleneck-Verteilung" />
+
+                                        <DataGrid MinHeight="220"
+                                                  ItemsSource="{Binding SelectedRunBottleneckDistribution}"
+                                                  AutoGenerateColumns="False"
+                                                  IsReadOnly="True"
+                                                  CanUserAddRows="False"
+                                                  CanUserDeleteRows="False"
+                                                  HeadersVisibility="Column"
+                                                  GridLinesVisibility="Horizontal">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Ursache"
+                                                                    Width="*"
+                                                                    Binding="{Binding TypeText}" />
+                                                <DataGridTextColumn Header="Anteil"
+                                                                    Width="75"
+                                                                    Binding="{Binding ShareText}" />
+                                                <DataGridTextColumn Header="Episoden"
+                                                                    Width="70"
+                                                                    Binding="{Binding EpisodeCountText}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Margin="0,0,0,8"
+                                                   FontWeight="SemiBold"
+                                                   Text="Stutter-Episoden" />
+
+                                        <DataGrid MinHeight="260"
+                                                  MaxHeight="500"
+                                                  ItemsSource="{Binding SelectedRunStutterEpisodes}"
+                                                  AutoGenerateColumns="False"
+                                                  IsReadOnly="True"
+                                                  CanUserAddRows="False"
+                                                  CanUserDeleteRows="False"
+                                                  GridLinesVisibility="Horizontal">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Zeit"
+                                                                    Width="105"
+                                                                    Binding="{Binding TimeText}" />
+                                                <DataGridTextColumn Header="Dauer"
+                                                                    Width="85"
+                                                                    Binding="{Binding DurationText}" />
+                                                <DataGridTemplateColumn Header="Stufe" Width="80">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock VerticalAlignment="Center" FontWeight="SemiBold"
+                                                                       Foreground="{Binding SeverityBrush}"
+                                                                       Text="{Binding SeverityText}" />
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                <DataGridTextColumn Header="Ursache"
+                                                                    Width="230"
+                                                                    Binding="{Binding TitleText}" />
+                                                <DataGridTextColumn Header="Vertrauen"
+                                                                    Width="85"
+                                                                    Binding="{Binding ConfidenceText}" />
+                                                <DataGridTextColumn Header="Frametime"
+                                                                    Width="145"
+                                                                    Binding="{Binding FrameTimeText}" />
+                                                <DataGridTextColumn Header="FPS"
+                                                                    Width="100"
+                                                                    Binding="{Binding FpsText}" />
+                                                <DataGridTextColumn Header="Kontext"
+                                                                    Width="*"
+                                                                    MinWidth="360"
+                                                                    Binding="{Binding ContextText}" />
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Margin="0,18,0,0"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="12" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Run-Vergleich" />
+
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220" />
+                                        <ColumnDefinition Width="12" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <ComboBox ItemsSource="{Binding Runs}"
+                                              SelectedItem="{Binding SelectedComparisonRun,
+                                                                     Mode=TwoWay}"
+                                              DisplayMemberPath="Name" />
+
+                                    <TextBlock Grid.Column="2"
+                                               VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="{Binding ComparisonStatusText}" />
+                                </Grid>
+
+                                <Grid Grid.Row="4"
+                                      DataContext="{Binding SelectedRunComparison}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="12" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel>
+                                        <TextBlock FontSize="16"
+                                                   FontWeight="SemiBold"
+                                                   Text="{Binding TitleText,
+                                                                  TargetNullValue='Kein Vergleich geladen'}" />
+                                        <TextBlock Margin="0,10,0,0"
+                                                   Text="Durchschnittliche FPS" />
+                                        <TextBlock FontSize="18"
+                                                   Text="{Binding AverageFpsText}" />
+                                        <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   Text="{Binding AverageFpsDifferenceText}" />
+
+                                        <TextBlock Margin="0,10,0,0"
+                                                   Text="1-%-Low" />
+                                        <TextBlock FontSize="18"
+                                                   Text="{Binding OnePercentLowText}" />
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="P99-Frametime" />
+                                        <TextBlock FontSize="18"
+                                                   Text="{Binding P99Text}" />
+
+                                        <TextBlock Margin="0,10,0,0"
+                                                   Text="Frametime-Spikes" />
+                                        <TextBlock FontSize="18"
+                                                   Text="{Binding SpikeText}" />
+
+                                        <TextBlock Margin="0,10,0,0"
+                                                   Text="Bottleneck" />
+                                        <TextBlock FontSize="18"
+                                                   TextWrapping="Wrap"
+                                                   Text="{Binding BottleneckText}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Grid>
+                        </Border>
+
+                        <Border Margin="0,18,0,0"
+                                Padding="18"
+                                Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17"
+                                           FontWeight="SemiBold"
+                                           Text="Timeline 2.0" />
+                                <TextBlock Margin="0,4,0,10"
+                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Text="{Binding TimelineStatusText}" />
+
+                                <DataGrid MinHeight="260"
+                                          MaxHeight="520"
+                                          ItemsSource="{Binding SelectedRunTimelinePeriods}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          CanUserAddRows="False"
+                                          CanUserDeleteRows="False"
+                                          GridLinesVisibility="Horizontal">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Zeitraum"
+                                                            Width="145"
+                                                            Binding="{Binding TimeText}" />
+                                        <DataGridTextColumn Header="Dauer"
+                                                            Width="90"
+                                                            Binding="{Binding DurationText}" />
+                                        <DataGridTextColumn Header="Stufe"
+                                                            Width="90"
+                                                            Binding="{Binding SeverityText}" />
+                                        <DataGridTextColumn Header="Kategorie"
+                                                            Width="110"
+                                                            Binding="{Binding CategoryText}" />
+                                        <DataGridTextColumn Header="Ursache / Ereignis"
+                                                            Width="290"
+                                                            Binding="{Binding TitleText}" />
+                                        <DataGridTextColumn Header="Quelle"
+                                                            Width="180"
+                                                            Binding="{Binding SourceText}" />
+                                        <DataGridTextColumn Header="Maximum"
+                                                            Width="100"
+                                                            Binding="{Binding MaximumValueText}" />
+                                        <DataGridTextColumn Header="Erklärung"
+                                                            Width="*"
+                                                            MinWidth="360"
+                                                            Binding="{Binding DescriptionText}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem x:Name="SettingsTab" Header="Einstellungen &amp; Diagnose">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="24">
+                        <TextBlock FontSize="22" FontWeight="SemiBold" Text="PC Monitor" />
+                        <TextBlock Margin="0,6,0,0" FontSize="17" Text="{Binding ProductVersionText}" />
+                        <TextBlock Margin="0,4,0,0" Foreground="{DynamicResource TextSecondaryBrush}" Text="{Binding RuntimeVersionText}" />
+                        <TextBlock Margin="0,4,0,18" Foreground="{DynamicResource TextSecondaryBrush}" Text="{Binding PresentMonSessionText}" />
+
+                        <Border Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17" FontWeight="SemiBold" Text="Darstellung" />
+                                <TextBlock Margin="0,6,0,12" Foreground="{DynamicResource TextSecondaryBrush}"
+                                           Text="Wähle das Farbschema für PC Monitor." />
+                                <StackPanel Orientation="Horizontal">
+                                    <Button x:Name="DarkThemeButton" Width="130" Content="Dunkel"
+                                            Click="OnDarkThemeClick" />
+                                    <Button x:Name="LightThemeButton" Margin="10,0,0,0" Width="130" Content="Hell"
+                                            Click="OnLightThemeClick" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Margin="0,18,0,0" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17" FontWeight="SemiBold" Text="Diagnosepaket" />
+                                <TextBlock Margin="0,6,0,0" TextWrapping="Wrap"
+                                           Text="Das Paket wird ausschließlich lokal erstellt. Es enthält Logs, anonymisierte Einstellungen, Versionsinformationen, Run-Namen, Prozessnamen, Programmpfade sowie Tabellen- und Sample-Anzahlen, aber keine Messwertreihen und keine Datenbank." />
+                                <Button Margin="0,14,0,0" Width="220" Height="38" HorizontalAlignment="Left"
+                                        Command="{Binding CreateDiagnosticsPackageCommand}"
+                                        Content="Diagnosepaket erstellen" />
+                                <TextBlock Margin="0,10,0,0" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap"
+                                           Text="{Binding DiagnosticsStatusText}" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Margin="0,18,0,0" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12">
+                            <StackPanel>
+                                <TextBlock FontSize="17" FontWeight="SemiBold" Text="Datenschutz" />
+                                <TextBlock Margin="0,6,0,0" TextWrapping="Wrap"
+                                           Text="PC Monitor verwendet keine Telemetrie und führt keine automatischen Uploads durch. Netzwerkzugriffe erfolgen ausschließlich für die konfigurierten Ping-Messungen. Diagnosepakete werden nicht automatisch übertragen." />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Margin="0,18,0,0" Padding="18" Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock FontSize="17" FontWeight="SemiBold" Text="Credits" />
+                                    <TextBlock Margin="0,6,0,0" Text="Entwickelt von LetsTiger" />
+                                    <TextBlock Margin="0,4,0,0" Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="Danke an alle Testerinnen und Tester der Beta-Version." />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="24,0,0,0" HorizontalAlignment="Right">
+                                    <TextBlock HorizontalAlignment="Right" FontWeight="SemiBold" Text="PC Monitor" />
+                                    <TextBlock Margin="0,4,0,0" HorizontalAlignment="Right"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="{Binding ProductVersionText}" />
+                                    <TextBlock Margin="0,4,0,0" HorizontalAlignment="Right"
+                                               Foreground="{DynamicResource TextSecondaryBrush}"
+                                               Text="© 2026 LetsTiger" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <Border Grid.Row="1" Panel.ZIndex="100" Background="#66000000">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsRunSelectionLoading}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Border Width="360" Padding="26" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1" CornerRadius="14">
+                <StackPanel>
+                    <TextBlock HorizontalAlignment="Center" FontSize="18" FontWeight="SemiBold"
+                               Text="Auswertung wird geladen" />
+                    <TextBlock Margin="0,7,0,16" HorizontalAlignment="Center"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
+                               Text="Messwerte und Diagnose werden vorbereitet …" />
+                    <ProgressBar Height="6" IsIndeterminate="True" />
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</Window>

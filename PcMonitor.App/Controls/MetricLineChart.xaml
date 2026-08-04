@@ -1,0 +1,19 @@
+<UserControl x:Class="PcMonitor.App.Controls.MetricLineChart"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             MinHeight="180">
+    <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="10"
+            Padding="8">
+        <Grid>
+            <Canvas x:Name="ChartCanvas"
+                    ClipToBounds="True" />
+            <TextBlock x:Name="EmptyText"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
+                       Text="Keine Chartdaten vorhanden." />
+        </Grid>
+    </Border>
+</UserControl>

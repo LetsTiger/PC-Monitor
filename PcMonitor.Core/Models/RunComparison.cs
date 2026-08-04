@@ -1,0 +1,26 @@
+namespace PcMonitor.Core.Models;
+
+public sealed record RunComparison(
+    Guid BaseRunId,
+    string BaseRunName,
+    Guid ComparisonRunId,
+    string ComparisonRunName,
+    double? BaseAverageFps,
+    double? ComparisonAverageFps,
+    double? AverageFpsDifference,
+    double? AverageFpsDifferencePercent,
+    double? BaseOnePercentLowFps,
+    double? ComparisonOnePercentLowFps,
+    double? OnePercentLowDifference,
+    double? BaseP99FrameTimeMilliseconds,
+    double? ComparisonP99FrameTimeMilliseconds,
+    double? P99FrameTimeDifferenceMilliseconds,
+    long BaseSpikeCount,
+    long ComparisonSpikeCount,
+    long SpikeCountDifference,
+    double? BaseAverageGpuLoadPercent,
+    double? ComparisonAverageGpuLoadPercent,
+    double? BaseMaximumCpuUsagePercent,
+    double? ComparisonMaximumCpuUsagePercent,
+    BottleneckType BaseBottleneck,
+    BottleneckType ComparisonBottleneck);

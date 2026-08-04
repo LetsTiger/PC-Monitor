@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="PcMonitor.App/PcMonitor.App.csproj" />
+  <Project Path="PcMonitor.Application/PcMonitor.Application.csproj" />
+  <Project Path="PcMonitor.Collectors/PcMonitor.Collectors.csproj" />
+  <Project Path="PcMonitor.Core/PcMonitor.Core.csproj" />
+  <Project Path="PcMonitor.Infrastructure/PcMonitor.Infrastructure.csproj" />
+  <Project Path="PcMonitor.Tests/PcMonitor.Tests.csproj" />
+</Solution>

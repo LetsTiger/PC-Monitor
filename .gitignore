@@ -1,0 +1,63 @@
+# IDE- und lokale Arbeitsumgebung
+.idea/
+**/.idea/
+.vs/
+.vscode/
+.fleet/
+.agents/
+.codex/
+*.user
+*.suo
+*.DotSettings.user
+
+# Lokale Projektübergabe- und Agentendateien
+/1_000
+/APPLY-README.txt
+/AGENTS.md
+
+# .NET-Build- und Testergebnisse
+**/bin/
+**/obj/
+artifacts/
+TestResults/
+coverage/
+coverage.*
+*.trx
+
+# Lokale Anwendungsdaten
+settings.json
+**/settings.json
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+*.log
+*.tmp
+*.bak
+*.old
+*.userprefs
+
+# Diagnosepakete
+*.zip
+
+# Temporäre PresentMon-Ausgaben
+capture_*.csv
+presentmon_*.log
+/Tools/PresentMon/PresentMon.exe
+/Tools/PresentMon/PresentMon-*.exe
+/Tools/PresentMon/PresentMon.*.download
+
+# Lokale Inno-Setup-Ausgaben
+installer/Output/
+installer/output/
+installer/*.exe
+installer/*.sha256.txt
+
+# Lokale Hilfsskripte
+/PCMonitor-Lokal.cmd
+/PCMonitor-Lokal.ps1
